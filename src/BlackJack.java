@@ -84,10 +84,10 @@ public class BlackJack {
                         gain = -mise;
                     } else if (dealerSum > 21) {
                         message = "C'est juste de la chance !";
-                        gain = mise;
+                        gain = mise*2;
                     } else if (playerSum == dealerSum) {
                         message = "Presque !";
-                        gain = 0;
+                        gain = mise;
                     } else if (playerSum > dealerSum) {
                         message = "C'est juste de la chance !";
                         gain = mise*2;
