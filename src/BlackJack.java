@@ -33,7 +33,7 @@ public class BlackJack {
         }
 
         public String getImagePath() {
-            return "./cards/" + toString() + ".png";
+            return "asset/cards/" + toString() + ".png";
         }
     }
 
@@ -66,23 +66,23 @@ public class BlackJack {
             
             try {
                 //draw hidden card
-                Image hiddenCardImg = new ImageIcon(getClass().getResource("./cards/BACK.png")).getImage();
+                Image hiddenCardImg = new ImageIcon("asset/cards/BACK.png").getImage();
                 if (!stayButton.isEnabled()) {
-                    hiddenCardImg = new ImageIcon(getClass().getResource(hiddenCard.getImagePath())).getImage();
+                    hiddenCardImg = new ImageIcon(hiddenCard.getImagePath()).getImage();
                 }
                 g.drawImage(hiddenCardImg, 20, 20, cardWidth, cardHeight, null);
 
                 //draw dealer's hand
                 for (int i = 0; i < dealerHand.size(); i++) {
                     Card card = dealerHand.get(i);
-                    Image cardImg = new ImageIcon(getClass().getResource(card.getImagePath())).getImage();
+                    Image cardImg = new ImageIcon(card.getImagePath()).getImage();
                     g.drawImage(cardImg, cardWidth + 25 + (cardWidth + 5)*i, 20, cardWidth, cardHeight, null);
                 }
 
                 //draw player's hand
                 for (int i = 0; i < playerHand.size(); i++) {
                     Card card = playerHand.get(i);
-                    Image cardImg = new ImageIcon(getClass().getResource(card.getImagePath())).getImage();
+                    Image cardImg = new ImageIcon(card.getImagePath()).getImage();
                     g.drawImage(cardImg, 20 + (cardWidth + 5)*i, 320, cardWidth, cardHeight, null);
                 }
 
