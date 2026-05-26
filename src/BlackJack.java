@@ -119,8 +119,8 @@ public class BlackJack {
         }
     };
     JPanel buttonPanel = new JPanel();
-    JButton hitButton = new JButton("Hit");
-    JButton stayButton = new JButton("Stay");
+    JButton hitButton = new JButton("Une carte !");
+    JButton stayButton = new JButton("Je reste !");
     JButton restartButton = new JButton("Restart");
 
     BlackJack() {
