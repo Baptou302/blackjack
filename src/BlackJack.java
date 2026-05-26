@@ -80,19 +80,19 @@ public class BlackJack {
                     String message;
                     int gain = 0;
                     if (playerSum > 21) {
-                        message = "Tu as perdu !";
+                        message = "Tu es nul !";
                         gain = -mise;
                     } else if (dealerSum > 21) {
-                        message = "C'est gagné !";
+                        message = "C'est juste de la chance !";
                         gain = mise;
                     } else if (playerSum == dealerSum) {
-                        message = "Égalité !";
+                        message = "Presque !";
                         gain = 0;
                     } else if (playerSum > dealerSum) {
-                        message = "C'est gagné !";
+                        message = "C'est juste de la chance !";
                         gain = mise*2;
                     } else {
-                        message = "Tu as perdu !";
+                        message = "Tu es nul !";
                         gain = -mise;
                     }
 
@@ -207,7 +207,7 @@ public class BlackJack {
         root.setBorder(BorderFactory.createEmptyBorder(16, 16, 16, 16));
 
         // titre
-        JLabel titre = new JLabel("🎰  Placer votre mise", SwingConstants.CENTER);
+        JLabel titre = new JLabel("  Placer votre mise", SwingConstants.CENTER);
         titre.setFont(new Font("Georgia", Font.BOLD, 22));
         titre.setForeground(new Color(255, 215, 0));
         root.add(titre, BorderLayout.NORTH);
@@ -336,7 +336,7 @@ public class BlackJack {
             infoLabel.setText("  Solde : " + solde + " €    |    Mise : " + mise + " €  ");
     }
 
-    // ── Logique de jeu ──────────────────────────────────────────────────
+    // ── Logique de jeu 
     private void lancerPartie() {
         solde -= mise;          // on déduit la mise du solde
         partieFinie = false;
@@ -396,7 +396,7 @@ public class BlackJack {
         return dealerSum;
     }
 
-    // ── Utilitaire style bouton ─────────────────────────────────────────
+    // ── Utilitaire style bouton
     private void styleButton(JButton btn, Color bg, Color fg) {
         btn.setBackground(bg);
         btn.setForeground(fg);
