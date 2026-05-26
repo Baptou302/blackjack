@@ -19,13 +19,13 @@ public class BlackJack {
         }
 
         public int getValue() {
-            if ("AJQK".contains(value)) { //A J Q K
+            if ("AJQK".contains(value)) { 
                 if (value == "A") {
                     return 11;
                 }
                 return 10;
             }
-            return Integer.parseInt(value); //2-10
+            return Integer.parseInt(value); 
         }
 
         public boolean isAce() {
@@ -38,7 +38,7 @@ public class BlackJack {
     }
 
     ArrayList<Card> deck;
-    Random random = new Random(); //shuffle deck
+    Random random = new Random(); 
 
     //dealer
     Card hiddenCard;
@@ -55,7 +55,7 @@ public class BlackJack {
     int boardWidth = 600;
     int boardHeight = boardWidth;
 
-    int cardWidth = 110; //ratio should 1/1.4
+    int cardWidth = 110; 
     int cardHeight = 154;
 
     JFrame frame = new JFrame("Black Jack");
@@ -65,21 +65,18 @@ public class BlackJack {
             super.paintComponent(g);
             
             try {
-                //draw hidden card
                 Image hiddenCardImg = new ImageIcon("asset/cards/BACK.png").getImage();
                 if (!stayButton.isEnabled()) {
                     hiddenCardImg = new ImageIcon(hiddenCard.getImagePath()).getImage();
                 }
                 g.drawImage(hiddenCardImg, 20, 20, cardWidth, cardHeight, null);
 
-                //draw dealer's hand
                 for (int i = 0; i < dealerHand.size(); i++) {
                     Card card = dealerHand.get(i);
                     Image cardImg = new ImageIcon(card.getImagePath()).getImage();
                     g.drawImage(cardImg, cardWidth + 25 + (cardWidth + 5)*i, 20, cardWidth, cardHeight, null);
                 }
 
-                //draw player's hand
                 for (int i = 0; i < playerHand.size(); i++) {
                     Card card = playerHand.get(i);
                     Image cardImg = new ImageIcon(card.getImagePath()).getImage();
@@ -95,20 +92,20 @@ public class BlackJack {
 
                     String message = "";
                     if (playerSum > 21) {
-                        message = "You Lose!";
+                        message = "Tu es nul!";
                     }
                     else if (dealerSum > 21) {
-                        message = "You Win!";
+                        message = "C'est gagné!";
                     }
-                    //both you and dealer <= 21
+  
                     else if (playerSum == dealerSum) {
-                        message = "Tie!";
+                        message = "Egalité!";
                     }
                     else if (playerSum > dealerSum) {
-                        message = "You Win!";
+                        message = "C'est gagné!";
                     }
                     else if (playerSum < dealerSum) {
-                        message = "You Lose!";
+                        message = "Tu es nul!";
                     }
 
                     g.setFont(new Font("Arial", Font.PLAIN, 30));
@@ -150,7 +147,7 @@ public class BlackJack {
                 playerSum += card.getValue();
                 playerAceCount += card.isAce() ? 1 : 0;
                 playerHand.add(card);
-                if (reducePlayerAce() > 21) { //A + 2 + J --> 1 + 2 + J
+                if (reducePlayerAce() > 21) { 
                     hitButton.setEnabled(false); 
                 }
                 gamePanel.repaint();
@@ -185,7 +182,7 @@ public class BlackJack {
         dealerSum = 0;
         dealerAceCount = 0;
 
-        hiddenCard = deck.remove(deck.size()-1); //remove card at last index
+        hiddenCard = deck.remove(deck.size()-1); 
         dealerSum += hiddenCard.getValue();
         dealerAceCount += hiddenCard.isAce() ? 1 : 0;
 
