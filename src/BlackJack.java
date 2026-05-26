@@ -215,7 +215,7 @@ public class BlackJack {
         root.setBorder(BorderFactory.createEmptyBorder(16, 16, 16, 16));
 
         // titre
-        JLabel titre = new JLabel("🎰  Placer votre mise", SwingConstants.CENTER);
+        JLabel titre = new JLabel("Placer votre mise", SwingConstants.CENTER);
         titre.setFont(new Font("Georgia", Font.BOLD, 22));
         titre.setForeground(new Color(255, 215, 0));
         root.add(titre, BorderLayout.NORTH);
@@ -267,7 +267,7 @@ public class BlackJack {
 
         btnAnnuler = new JButton("Annuler mise");
         styleButton(btnAnnuler, new Color(90, 90, 90), Color.WHITE);
-        btnValider = new JButton("Jouer →");
+        btnValider = new JButton("Jouer");
         styleButton(btnValider, new Color(183, 28, 28), Color.WHITE);
         btnValider.setEnabled(false);
 
@@ -277,6 +277,7 @@ public class BlackJack {
             soldeLabelDialog.setText("Solde : " + solde + " €");
             btnValider.setEnabled(false);
         });
+
 
         btnValider.addActionListener(e -> {
             if (mise <= 0) { JOptionPane.showMessageDialog(bettingDialog, "Misez au moins un jeton !"); return; }
