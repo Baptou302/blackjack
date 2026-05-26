@@ -5,21 +5,36 @@ import javax.swing.*;
 
 public class BlackJack {
 
-    // ── Valeurs des jetons ──────────────────────────────────────────────
-    private static final int JETON_BLEU  = 10;
-    private static final int JETON_ROSE  = 25;
+    // Valeurs des jetons
+    private static final int JETON_BLEU = 10;
+    private static final int JETON_ROSE = 25;
     private static final int JETON_ROUGE = 50;
 
     private class Card {
         String value, type;
-        Card(String value, String type) { this.value = value; this.type = type; }
-        public String toString()  { return value + "-" + type; }
+
+        Card(String value, String type) {
+            this.value = value;
+            this.type = type;
+        }
+
+        public String toString() {
+            return value + "-" + type;
+        }
+
         public int getValue() {
-            if ("AJQK".contains(value)) return value.equals("A") ? 11 : 10;
+            if ("AJQK".contains(value))
+                return value.equals("A") ? 11 : 10;
             return Integer.parseInt(value);
         }
-        public boolean isAce()        { return value.equals("A"); }
-        public String getImagePath()  { return "asset/cards/" + toString() + ".png"; }
+
+        public boolean isAce() {
+            return value.equals("A");
+        }
+
+        public String getImagePath() {
+            return "asset/cards/" + toString() + ".png";
+        }
     }
 
     ArrayList<Card> deck;
@@ -35,17 +50,17 @@ public class BlackJack {
     int playerSum, playerAceCount;
 
     // economy
-    int solde      = 500;   // argent disponible
-    int mise       = 0;     // mise en cours
+    int solde = 500; // argent disponible
+    int mise = 0; // mise en cours
     boolean partieFinie = false;
 
     // dimensions
-    int boardWidth  = 680;
+    int boardWidth = 680;
     int boardHeight = 600;
-    int cardWidth   = 110;
-    int cardHeight  = 154;
+    int cardWidth = 110;
+    int cardHeight = 154;
 
-    // ── Composants principaux ───────────────────────────────────────────
+    // Composants principaux
     JFrame frame = new JFrame("Black Jack");
 
     JPanel gamePanel = new JPanel() {
@@ -84,13 +99,13 @@ public class BlackJack {
                         gain = -mise;
                     } else if (dealerSum > 21) {
                         message = "C'est juste de la chance !";
-                        gain = mise*2;
+                        gain = mise * 2;
                     } else if (playerSum == dealerSum) {
                         message = "Presque !";
                         gain = mise;
                     } else if (playerSum > dealerSum) {
                         message = "C'est juste de la chance !";
-                        gain = mise*2;
+                        gain = mise * 2;
                     } else {
                         message = "Tu es nul !";
                         gain = -mise;
@@ -107,24 +122,26 @@ public class BlackJack {
                     g.drawString(message, 200, 265);
                 }
 
-            } catch (Exception e) { e.printStackTrace(); }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     };
 
     JPanel buttonPanel = new JPanel();
-    JButton hitButton     = new JButton("Une carte !");
-    JButton stayButton    = new JButton("Je reste !");
+    JButton hitButton = new JButton("Une carte !");
+    JButton stayButton = new JButton("Je reste !");
     JButton restartButton = new JButton("Nouvelle partie");
 
-    // ── Fenêtre de mise (JDialog modale) ────────────────────────────────
+    // ── Fenêtre de mise (JDialog modale) 
     JDialog bettingDialog;
-    JLabel  soldeLabelDialog;
-    JLabel  miseLabelDialog;
+    JLabel soldeLabelDialog;
+    JLabel miseLabelDialog;
     JButton btnBleu, btnRose, btnRouge;
     JButton btnAnnuler, btnValider;
-    JLabel  imgBleu, imgRose, imgRouge;
+    JLabel imgBleu, imgRose, imgRouge;
 
-    // ── Barre d'info en haut du jeu ──────────────────────────────────────
+    // ── Barre d'info en haut du jeu 
     JLabel infoLabel;
 
     // ════════════════════════════════════════════════════════════════════
@@ -154,9 +171,9 @@ public class BlackJack {
         refreshInfoLabel();
 
         // boutons
-        styleButton(hitButton,     new Color(46, 125, 50),  Color.WHITE);
-        styleButton(stayButton,    new Color(183, 28, 28),  Color.WHITE);
-        styleButton(restartButton, new Color(33, 33, 33),   Color.WHITE);
+        styleButton(hitButton, new Color(46, 125, 50), Color.WHITE);
+        styleButton(stayButton, new Color(183, 28, 28), Color.WHITE);
+        styleButton(restartButton, new Color(33, 33, 33), Color.WHITE);
 
         buttonPanel.setBackground(new Color(20, 60, 35));
         buttonPanel.add(hitButton);
@@ -164,13 +181,13 @@ public class BlackJack {
         buttonPanel.add(restartButton);
         frame.add(buttonPanel, BorderLayout.SOUTH);
 
-        // ── Listeners ──────────────────────────────────────────────────
         hitButton.addActionListener(e -> {
             Card card = deck.remove(deck.size() - 1);
-            playerSum  += card.getValue();
+            playerSum += card.getValue();
             playerAceCount += card.isAce() ? 1 : 0;
             playerHand.add(card);
-            if (reducePlayerAce() > 21) hitButton.setEnabled(false);
+            if (reducePlayerAce() > 21)
+                hitButton.setEnabled(false);
             gamePanel.repaint();
         });
 
@@ -194,7 +211,7 @@ public class BlackJack {
         gamePanel.repaint();
     }
 
-    // ── Fenêtre de mise ─────────────────────────────────────────────────
+    // ── Fenêtre de mise
     private void buildBettingDialog() {
         bettingDialog = new JDialog(frame, "Placer votre mise", true);
         bettingDialog.setSize(420, 370);
@@ -221,11 +238,13 @@ public class BlackJack {
         soldeLabelDialog = new JLabel("Solde : " + solde + " €");
         soldeLabelDialog.setFont(new Font("Georgia", Font.PLAIN, 15));
         soldeLabelDialog.setForeground(Color.WHITE);
-        miseLabelDialog  = new JLabel("Mise actuelle : 0 €");
+        miseLabelDialog = new JLabel("Mise actuelle : 0 €");
         miseLabelDialog.setFont(new Font("Georgia", Font.BOLD, 15));
         miseLabelDialog.setForeground(new Color(255, 215, 0));
 
-        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 3;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 3;
         centre.add(soldeLabelDialog, gbc);
         gbc.gridy = 1;
         centre.add(miseLabelDialog, gbc);
@@ -234,22 +253,28 @@ public class BlackJack {
         gbc.gridwidth = 1;
         gbc.gridy = 2;
 
-        imgBleu  = loadJetonLabel("asset/jetons/jetons_bleu.png",  JETON_BLEU  + " €");
-        imgRose  = loadJetonLabel("asset/jetons/jetons_rose.png",  JETON_ROSE  + " €");
+        imgBleu = loadJetonLabel("asset/jetons/jetons_bleu.png", JETON_BLEU + " €");
+        imgRose = loadJetonLabel("asset/jetons/jetons_rose.png", JETON_ROSE + " €");
         imgRouge = loadJetonLabel("asset/jetons/jetons_rouge.png", JETON_ROUGE + " €");
 
-        btnBleu  = jetonButton(JETON_BLEU,  new Color(30, 100, 200));
-        btnRose  = jetonButton(JETON_ROSE,  new Color(220, 80, 140));
+        btnBleu = jetonButton(JETON_BLEU, new Color(30, 100, 200));
+        btnRose = jetonButton(JETON_ROSE, new Color(220, 80, 140));
         btnRouge = jetonButton(JETON_ROUGE, new Color(200, 30, 30));
 
-        gbc.gridx = 0; centre.add(imgBleu,  gbc);
-        gbc.gridx = 1; centre.add(imgRose,  gbc);
-        gbc.gridx = 2; centre.add(imgRouge, gbc);
+        gbc.gridx = 0;
+        centre.add(imgBleu, gbc);
+        gbc.gridx = 1;
+        centre.add(imgRose, gbc);
+        gbc.gridx = 2;
+        centre.add(imgRouge, gbc);
 
         gbc.gridy = 3;
-        gbc.gridx = 0; centre.add(btnBleu,  gbc);
-        gbc.gridx = 1; centre.add(btnRose,  gbc);
-        gbc.gridx = 2; centre.add(btnRouge, gbc);
+        gbc.gridx = 0;
+        centre.add(btnBleu, gbc);
+        gbc.gridx = 1;
+        centre.add(btnRose, gbc);
+        gbc.gridx = 2;
+        centre.add(btnRouge, gbc);
 
         root.add(centre, BorderLayout.CENTER);
 
@@ -271,7 +296,10 @@ public class BlackJack {
         });
 
         btnValider.addActionListener(e -> {
-            if (mise <= 0) { JOptionPane.showMessageDialog(bettingDialog, "Misez au moins un jeton !"); return; }
+            if (mise <= 0) {
+                JOptionPane.showMessageDialog(bettingDialog, "Misez au moins un jeton !");
+                return;
+            }
             bettingDialog.setVisible(false);
             lancerPartie();
         });
@@ -288,7 +316,7 @@ public class BlackJack {
         JLabel lbl;
         try {
             ImageIcon raw = new ImageIcon(path);
-            Image scaled  = raw.getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH);
+            Image scaled = raw.getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH);
             lbl = new JLabel(texte, new ImageIcon(scaled), SwingConstants.CENTER);
         } catch (Exception ex) {
             lbl = new JLabel(texte, SwingConstants.CENTER);
@@ -336,9 +364,9 @@ public class BlackJack {
             infoLabel.setText("  Solde : " + solde + " €    |    Mise : " + mise + " €  ");
     }
 
-    // ── Logique de jeu 
+    //  Logique de jeu
     private void lancerPartie() {
-        solde -= mise;          // on déduit la mise du solde
+        solde -= mise; // on déduit la mise du solde
         partieFinie = false;
         startGame();
         hitButton.setEnabled(true);
@@ -352,7 +380,7 @@ public class BlackJack {
         shuffleDeck();
 
         dealerHand = new ArrayList<>();
-        dealerSum  = dealerAceCount = 0;
+        dealerSum = dealerAceCount = 0;
         hiddenCard = deck.remove(deck.size() - 1);
         dealerSum += hiddenCard.getValue();
         dealerAceCount += hiddenCard.isAce() ? 1 : 0;
@@ -362,8 +390,8 @@ public class BlackJack {
         dealerAceCount += card.isAce() ? 1 : 0;
         dealerHand.add(card);
 
-        playerHand  = new ArrayList<>();
-        playerSum   = playerAceCount = 0;
+        playerHand = new ArrayList<>();
+        playerSum = playerAceCount = 0;
         for (int i = 0; i < 2; i++) {
             card = deck.remove(deck.size() - 1);
             playerSum += card.getValue();
@@ -374,25 +402,35 @@ public class BlackJack {
 
     public void buildDeck() {
         deck = new ArrayList<>();
-        String[] values = {"A","2","3","4","5","6","7","8","9","10","J","Q","K"};
-        String[] types  = {"C","D","H","S"};
-        for (String t : types) for (String v : values) deck.add(new Card(v, t));
+        String[] values = { "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" };
+        String[] types = { "C", "D", "H", "S" };
+        for (String t : types)
+            for (String v : values)
+                deck.add(new Card(v, t));
     }
 
     public void shuffleDeck() {
         for (int i = 0; i < deck.size(); i++) {
             int j = random.nextInt(deck.size());
-            Card tmp = deck.get(i); deck.set(i, deck.get(j)); deck.set(j, tmp);
+            Card tmp = deck.get(i);
+            deck.set(i, deck.get(j));
+            deck.set(j, tmp);
         }
     }
 
     public int reducePlayerAce() {
-        while (playerSum > 21 && playerAceCount > 0) { playerSum -= 10; playerAceCount--; }
+        while (playerSum > 21 && playerAceCount > 0) {
+            playerSum -= 10;
+            playerAceCount--;
+        }
         return playerSum;
     }
 
     public int reduceDealerAce() {
-        while (dealerSum > 21 && dealerAceCount > 0) { dealerSum -= 10; dealerAceCount--; }
+        while (dealerSum > 21 && dealerAceCount > 0) {
+            dealerSum -= 10;
+            dealerAceCount--;
+        }
         return dealerSum;
     }
 
